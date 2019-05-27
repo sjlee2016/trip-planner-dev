@@ -299,12 +299,10 @@ router.post('/comment/:id/:comment_id', [ auth,
             }
 
             if(post.comments[index].user.toString() !== req.user.id) {
-            
                 return res.status(404).json({msg: 'User not authorized'}); 
             }
            
-            post.comments[index].text = req.body.text;
-            console.log(post.comments[index]); 
+            post.comments[index].text = req.body.text; 
             post.save(); 
             return res.json(post);
         } catch (err) {
