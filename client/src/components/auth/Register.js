@@ -1,42 +1,30 @@
 import React , { Fragment, useState} from 'react';
 import { connect } from 'react-redux';
 import {Link} from 'react-router-dom';
-import axios from 'axios'; 
 import {setAlert} from '../../actions/alert'; 
-const Register = (props) => {
+import {register} from '../../actions/auth'; 
+import PropTypes from 'prop-types'; 
+
+const Register = ({ setAlert, register } ) => {
     const [formData, setFormData] = useState({
         name : '',
         email : '',
         password: '',
         password2: ''
     });
+
     const {name,email,password,password2} = formData;  
-    const onChange = e => setFormData({ ...formData, [e.target.name] : e.target.value})
+    
+    const onChange = e => setFormData({ ...formData, [e.target.name] : e.target.value});
     const onSubmit = async e => {
         e.preventDefault();
         if(password !== password2){
-           props.setAlert('Password do not match', 'danger');
+           setAlert('Password do not match', 'danger');
         }else {
-            const newUser = {
-                name,
-                email,
-                password
-            }
-
-            try{
-                const config = {
-                    headers : {
-                    'Content-Type' : 'Application/json'
-                } 
-                }
-                const body = JSON.stringify(newUser); 
-                const res = await axios.post('/api/users', body, config); 
-                props.setAlert('Login successful', 'success');
-            }catch(err){
-
-            }
+            console.log('i am activated');
+            register({name,email,password});
         }
-    }
+    };
     return (
     <Fragment> 
     <section className="container">
@@ -79,5 +67,11 @@ const Register = (props) => {
   </section>
   </Fragment>   
   );
-}; 
-export default connect(null, {setAlert} )(Register); 
+};
+
+Register.propTypes = {
+    setAlert : PropTypes.func.isRequired,
+    register : PropTypes.func.isRequired
+};
+
+export default connect(null, {setAlert, register} )(Register); 
