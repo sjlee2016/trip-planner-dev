@@ -13,7 +13,7 @@ router.get('/', auth,
 async (req,res) => {
     try {
         const user = await User.findById(req.user.id).select('-password'); 
-        res.json(user); 
+        res.json(user);   // payload is the user 
     }catch(err){
         console.error(err.message);
         return res.status(400).json(); 
@@ -41,11 +41,9 @@ router.post('/login', [
        let user = await User.findOne({ email });
 
        if(!user){
-           console.log('wtf');
            return res.status(400).json({msg : 'Invalid Credentials'});
        }
        // CHECK PASSWORD 
-       console.log('yes');
        const isMatch = await bcrypt.compare(password, user.password); 
 
        if(!isMatch){

@@ -5,10 +5,9 @@ const Landing = (props) => {
         <section className="landing">
       <div className="dark-overlay">
         <div className="landing-inner">
-          <h1 className="x-large">Developer Connector</h1>
+          <h1 className="x-large">Se Jin's Blog</h1>
           <p className="lead">
-            Create a developer profile/portfolio, share posts and get help from
-            other developers
+            Welcome to Se Jin's Blog 
           </p>
           <div className="buttons">
             <Link to='/register' className="btn btn-primary">Sign Up </Link> 
