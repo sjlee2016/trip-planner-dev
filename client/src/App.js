@@ -14,12 +14,13 @@ import store from './store';
 import {loadUser} from './actions/auth'; 
 import setAuthToken from './utils/setAuthToken'; 
 if (localStorage.token) {
+  console.log("auth token is set in Appjs");
   setAuthToken(localStorage.token);
 }
 
 const App = () => { 
   useEffect(() => {
-      store.dispatch(loadUser); 
+      store.dispatch(loadUser()); 
     },[]); 
 
     // [] is the same as componentDidAmount 

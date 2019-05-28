@@ -8,18 +8,35 @@ import {
     USER_LOADED,
     AUTH_ERROR,
     LOGIN_SUCCESS,
-    LOGIN_FAIL
+    LOGIN_FAIL, 
+    LOG_OUT 
 } from './types';
 import setAuthToken from '../utils/setAuthToken';
+
+
+// Logout
+export const logOut = () => async dispatch => {
+    try{
+    dispatch({
+        type: LOG_OUT
+    })
+}catch(err){
+    return ; 
+}
+}
+
 // LOAD user 
-
-
 export const loadUser = () => async dispatch => {
+    if(!localStorage.token){
+        return; 
+    }
     if (localStorage.token) {
         setAuthToken(localStorage.token);
+
     }
     try {
-        const res = axios.get("http://localhost:5000/api/auth")
+        const res = axios.get("http://localhost:5000/api/auth");
+
         dispatch({
             type: USER_LOADED,
             payload: res.data
@@ -39,6 +56,7 @@ export const loadUser = () => async dispatch => {
             type: AUTH_ERROR 
         })
     }
+
 }
 
 // Register User
@@ -47,7 +65,6 @@ export const register = ({
     email,
     password
 }) => async dispatch => {
-    console.log("trying to register.. ");
     const config = {
         headers: {
             'Access-Control-Allow-Origin': '*',
@@ -61,18 +78,19 @@ export const register = ({
     });
     try {
         const res = await axios.post('http://localhost:5000/api/users/register', body, config);
-        console.log(res);
         dispatch({
             type: REGISTER_SUCCESS,
             payload: res.data
         });
-        console.log("success");
     } catch (err) {
         console.log(err);
         if (err.response) {
             switch (err.response.status) {
                 case 404:
                     dispatch(setAlert("Server Error", 'danger'));
+                    break;
+                case 400:
+                    dispatch(setAlert("User Already exists", 'danger'));
                     break;
                 default:
                     dispatch(setAlert("Internal Error", 'danger'));

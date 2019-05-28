@@ -1,6 +1,24 @@
 import React from 'react'
 import {Link} from 'react-router-dom'; 
-const Landing = (props) => {
+import {connect} from 'react-redux'; 
+import PropTypes from 'prop-types';
+
+const Landing = ({isAuthenticated, user}) => {
+    
+    if(isAuthenticated) {
+      return(
+        <section className="landing">
+      <div className="dark-overlay">
+        <div className="landing-inner">
+          <h1 className="x-large">Se Jin's Blog</h1>
+          <p className="lead">
+            Welcome Back 
+          </p>
+        </div>
+      </div>
+    </section>
+    ) 
+    } 
     return(
         <section className="landing">
       <div className="dark-overlay">
@@ -18,4 +36,13 @@ const Landing = (props) => {
     </section>
     )
 };
-export default Landing
+
+Landing.propTypes = {
+  isAuthenticated : PropTypes.bool,
+  user : PropTypes.object
+}; 
+const mapStateToProps = state => ({
+  isAuthenticated : state.auth.isAuthenticated, 
+  user : state.auth.user 
+});
+export default connect(mapStateToProps)(Landing)
