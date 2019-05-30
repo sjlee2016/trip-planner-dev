@@ -16,6 +16,7 @@ import setAuthToken from '../utils/setAuthToken';
 
 // Logout
 export const logOut = () => async dispatch => {
+    console.log("log out");
     try{
     dispatch({
         type: LOG_OUT
