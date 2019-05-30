@@ -9,10 +9,12 @@ const initialState = {
 
 export default function(state = initialState, action){
     const { type, payload } = action; 
+    if(type===USER_LOADED){
+        console.log("user is loaded");
+        console.log(payload);
+    }
     switch(type){
         case USER_LOADED:
-        console.log("user is loaded" );
-        console.log(action); 
         return {... state, isAuthenticated : true, loading : false, user : payload }; 
         case REGISTER_SUCCESS: 
         case LOGIN_SUCCESS : 

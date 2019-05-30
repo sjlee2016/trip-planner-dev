@@ -15,35 +15,25 @@ import setAuthToken from '../utils/setAuthToken';
 
 
 // Logout
-export const logOut = () => async dispatch => {
-    console.log("log out");
-    try{
+export const logOut = (e) => async dispatch => {
     dispatch({
         type: LOG_OUT
-    })
-}catch(err){
-    return ; 
-}
+    });
 }
 
 // LOAD user 
 export const loadUser = () => async dispatch => {
+    console.log("loading user..");
     if(!localStorage.token){
         return; 
     }
     if (localStorage.token) {
         setAuthToken(localStorage.token);
-
     }
-    try {
-        const res = axios.get("http://localhost:5000/api/auth");
-
-        dispatch({
-            type: USER_LOADED,
-            payload: res.data
-        });
-    } catch (err) {
-        console.log(err);
+    axios.get(`http://localhost:5000/api/auth/`).then(res => dispatch({
+           type: USER_LOADED,
+           payload: res.data
+       })).catch(err => {
         if (err.response) {
             switch (err.response.status) {
                 case 404:
@@ -56,8 +46,7 @@ export const loadUser = () => async dispatch => {
         dispatch({
             type: AUTH_ERROR 
         })
-    }
-
+       });
 }
 
 // Register User
@@ -84,14 +73,13 @@ export const register = ({
             payload: res.data
         });
     } catch (err) {
-        console.log(err);
         if (err.response) {
             switch (err.response.status) {
                 case 404:
                     dispatch(setAlert("Server Error", 'danger'));
                     break;
                 case 400:
-                    dispatch(setAlert("User Already exists", 'danger'));
+                    dispatch(setAlert("Account already exists for this email", 'danger'));
                     break;
                 default:
                     dispatch(setAlert("Internal Error", 'danger'));
@@ -108,7 +96,7 @@ export const login = ({
     email,
     password
 }) => async dispatch => {
-    console.log("trying to login.. ");
+    console.log("logging in..");
     const config = {
         headers: {
             'Access-Control-Allow-Origin': '*',
@@ -121,7 +109,7 @@ export const login = ({
     });
     try {
         const res = await axios.post('http://localhost:5000/api/auth/login', body, config);
-        console.log(res);
+
         dispatch({
             type: LOGIN_SUCCESS,
             payload: res.data

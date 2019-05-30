@@ -2,17 +2,20 @@ import React from 'react'
 import {Link} from 'react-router-dom'; 
 import {connect} from 'react-redux'; 
 import PropTypes from 'prop-types';
+const Landing = ({isAuthenticated,state}) => {
 
-const Landing = ({isAuthenticated, user}) => {
-    
     if(isAuthenticated) {
+      var userName = null;
+      if(state.user!=null)
+        userName = state.user.name; 
+
       return(
         <section className="landing">
       <div className="dark-overlay">
         <div className="landing-inner">
           <h1 className="x-large">Se Jin's Blog</h1>
           <p className="lead">
-            Welcome Back 
+            Welcome Back {userName} !! 
           </p>
         </div>
       </div>
@@ -39,10 +42,14 @@ const Landing = ({isAuthenticated, user}) => {
 
 Landing.propTypes = {
   isAuthenticated : PropTypes.bool,
-  user : PropTypes.object
+  user : PropTypes.object.isRequired
 }; 
-const mapStateToProps = state => ({
-  isAuthenticated : state.auth.isAuthenticated, 
-  user : state.auth.user 
-});
+
+function mapStateToProps (state) {
+  return {
+  isAuthenticated : state.auth.isAuthenticated,
+  state : state.auth
+  }
+} 
+
 export default connect(mapStateToProps)(Landing)
