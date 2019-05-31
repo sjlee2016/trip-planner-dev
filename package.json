@@ -28,6 +28,7 @@
     "gravatar": "^1.8.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.5.11",
+    "react-native": "^0.59.8",
     "request": "^2.88.0"
   },
   "devDependencies": {

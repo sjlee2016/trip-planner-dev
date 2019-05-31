@@ -17,12 +17,12 @@ const Navibar = ({isAuthenticated, logOut}) => {
         return (
 
             <Navbar bg="dark" variant="dark" expand="lg" fixed="top">
-  <Navbar.Brand href="/">Se Jin's Site</Navbar.Brand>
+  <Navbar.Brand href="/">Trip-Planner</Navbar.Brand>
   <Navbar.Toggle aria-controls="basic-navbar-nav" />
   <Navbar.Collapse id="basic-navbar-nav">
     <Nav className="mr-auto">
             <Nav.Link href="/">Home</Nav.Link>
-            <Nav.Link href="/manage">Manage</Nav.Link>
+            <Nav.Link href="/manage">Manage Group</Nav.Link>
             <Nav.Link href="/profile">Profile</Nav.Link>
             <Nav.Link onClick={onClick}>Logout</Nav.Link>
 
@@ -40,7 +40,7 @@ const Navibar = ({isAuthenticated, logOut}) => {
     return (
       
         <Navbar  bg="dark" variant="dark"  expand="lg" fixed="top">
-        <Navbar.Brand href="/">Se Jin's Site</Navbar.Brand>
+        <Navbar.Brand href="/">Trip-Planner</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">

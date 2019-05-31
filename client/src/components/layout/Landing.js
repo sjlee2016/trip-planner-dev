@@ -13,9 +13,9 @@ const Landing = ({isAuthenticated,state}) => {
         <section className="landing">
       <div className="dark-overlay">
         <div className="landing-inner">
-          <h1 className="x-large">Se Jin's Blog</h1>
+          <h1 className="x-large">Trip-Planner</h1>
           <p className="lead">
-            Welcome Back {userName} !! 
+            Welcome Back {userName} 
           </p>
         </div>
       </div>
@@ -26,9 +26,8 @@ const Landing = ({isAuthenticated,state}) => {
         <section className="landing">
       <div className="dark-overlay">
         <div className="landing-inner">
-          <h1 className="x-large">Se Jin's Blog</h1>
-          <p className="lead">
-            Welcome to Se Jin's Blog 
+          <h1 className="x-large">Trip-Planner</h1>
+          <p className="lead">making plans can be enjoyable with trip-planner
           </p>
           <div className="buttons">
             <Link to='/register' className="btn btn-primary">Sign Up </Link> 

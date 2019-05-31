@@ -1,9 +1,27 @@
-import React , { Fragment, useState} from 'react';
+import React , { StyleSheet, Fragment, useState} from 'react';
 import { connect } from 'react-redux';
 import {Link, Redirect} from 'react-router-dom';
 import {setAlert} from '../../actions/alert'; 
 import {register} from '../../actions/auth'; 
 import PropTypes from 'prop-types'; 
+import {Card, ListGroup, ListGroupItem,Button} from 'react-bootstrap'; 
+import { MDBContainer, MDBRow, MDBCol, MDBInput, MDBBtn } from 'mdbreact';
+
+import image from '../../img/pexels-photo-2108813.jpeg';
+
+
+const styles = {
+  cover : {
+    alignSelf: 'center',
+    height: 150,
+    width: 150,
+    borderWidth: 1,
+    borderRadius: 75
+  },
+  button: {
+    width: 10
+  }
+}; 
 
 const Register = ({ setAlert, register, isAuthenticated} ) => {
     const [formData, setFormData] = useState({
@@ -28,48 +46,82 @@ const Register = ({ setAlert, register, isAuthenticated} ) => {
     if(isAuthenticated){
       return <Redirect to="/" />
     }
-    return (
-    <Fragment> 
-    <section className="container">
-    <h1 className="large text-primary">Sign Up</h1>
-    <p className="lead"><i className="fas fa-user"></i> Create Your Account</p>
-    <form className="form" onSubmit={e => onSubmit(e)}>
-      <div className="form-group">
-        <input type="text" placeholder="Name" name="name" value={name} onChange={e=> onChange(e)} required />
-      </div>
-      <div className="form-group">
-        <input type="email" placeholder="Email Address" name="email"  value={email} onChange={e=> onChange(e)} />
-        <small className="form-text"
-          >This site uses Gravatar so if you want a profile image, use a
-          Gravatar email</small
-        >
-      </div>
-      <div className="form-group">
-        <input
-          type="password"
-          placeholder="Password"
-          name="password"
-          minLength="6"
-          value={password} onChange={e=> onChange(e)}
+    return ( 
+      <Card style={{ width: '20rem',   justifyContent: 'center',
+      alignItems: 'center',}} >
+  <Card.Img variant="top" src={image} style={styles.cover} />
+  <p className="h5 text-center mb-4">Register</p>
+            <div className="grey-text">
+    <MDBInput
+              
+            type="text"
+            icon="user"
+            group
+            error="wrong"
+            success="right"
+            label="name"
+            placeholder="Name"
+            name="name"
+            onChange={e => {onChange(e)}}
+            required
+      />
+      <MDBInput
+              
+              type="text"
+              icon="envelope"
+              group
+              error="wrong"
+              success="right"
+              label="email"
+              placeholder="Email"
+              name="email"
+              onChange={e => {onChange(e)}}
+              required
         />
-      </div>
-      <div className="form-group">
-        <input
-          type="password"
-          placeholder="Confirm Password"
-          name="password2"
-          minLength="6"
-          value={password2} onChange={e=> onChange(e)}
+
+         <MDBInput
+              
+              type="password"
+              icon="lock"
+              group
+              error="wrong"
+              success="right"
+              label="password"
+              placeholder="password"
+              name="password"
+              onChange={e => {onChange(e)}}
+              required
         />
-      </div>
-      <input type="submit" className="btn btn-primary" value="Register" />
-    </form>
-    <p className="my-1">
-      Already have an account? <Link to='/login'>Sign In</Link>
-    </p>
-  </section>
-  </Fragment>   
-  );
+    
+         <MDBInput
+              
+              type="password"
+              icon="exclamation-triangle"
+              group
+              error="wrong"
+              success="right"
+              label="password2"
+              placeholder="Confirm your password"
+              name="password2"
+              onChange={e => {onChange(e)}}
+              required
+        />
+        </div>
+        
+    
+
+  <br/>
+    <Button type="submit" size="sm" variant="success" styles={styles.button} onClick={e=>onSubmit(e)}> Submit </Button> 
+   
+  <Card.Body>
+    <Card.Text>
+    Already Have an account?
+    </Card.Text>
+    <Card.Link href="/login">Login</Card.Link>
+  </Card.Body>
+</Card>
+    ); 
+      
 };
 
 Register.propTypes = {
