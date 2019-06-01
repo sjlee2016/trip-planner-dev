@@ -2,7 +2,7 @@ import React , { StyleSheet, Fragment, useState} from 'react';
 import { connect } from 'react-redux';
 import {Link, Redirect} from 'react-router-dom';
 import {setAlert} from '../../actions/alert'; 
-import {register} from '../../actions/auth'; 
+import {register, loadUser} from '../../actions/auth'; 
 import PropTypes from 'prop-types'; 
 import {Card, ListGroup, ListGroupItem,Button} from 'react-bootstrap'; 
 import { MDBContainer, MDBRow, MDBCol, MDBInput, MDBBtn } from 'mdbreact';
@@ -13,13 +13,21 @@ import image from '../../img/pexels-photo-2108813.jpeg';
 const styles = {
   cover : {
     alignSelf: 'center',
-    height: 150,
-    width: 150,
+    height: 100,
+    width: 100,
     borderWidth: 1,
-    borderRadius: 75
+    borderRadius: 10
   },
   button: {
     width: 10
+  },
+  card : {
+    width: '30rem',  
+    justifyContent: 'center',
+    alignItems: 'center', 
+    marginLeft: "auto",
+    marginRight: "auto"
+
   }
 }; 
 
@@ -40,6 +48,8 @@ const Register = ({ setAlert, register, isAuthenticated} ) => {
            setAlert('Password do not match', 'danger');
         }else {
             register({name,email,password});
+            loadUser(); 
+            return <Redirect to="/"/> 
         }
     };
 
@@ -47,8 +57,8 @@ const Register = ({ setAlert, register, isAuthenticated} ) => {
       return <Redirect to="/" />
     }
     return ( 
-      <Card style={{ width: '20rem',   justifyContent: 'center',
-      alignItems: 'center',}} >
+      <div styles={{display: 'flex', justifyContent: 'center'}}> 
+      <Card style={styles.card} >
   <Card.Img variant="top" src={image} style={styles.cover} />
   <p className="h5 text-center mb-4">Register</p>
             <div className="grey-text">
@@ -100,7 +110,7 @@ const Register = ({ setAlert, register, isAuthenticated} ) => {
               group
               error="wrong"
               success="right"
-              label="password2"
+              label="Confirm your password"
               placeholder="Confirm your password"
               name="password2"
               onChange={e => {onChange(e)}}
@@ -120,6 +130,7 @@ const Register = ({ setAlert, register, isAuthenticated} ) => {
     <Card.Link href="/login">Login</Card.Link>
   </Card.Body>
 </Card>
+</div> 
     ); 
       
 };

@@ -42,7 +42,7 @@ router.post('/register', [
         name,
         email,
         avatar,
-        password 
+        password
         });
 
        // Encrypt password before saving to DB 

@@ -20,7 +20,16 @@ const UserSchema = new mongoose.Schema({
     date: {
         type : Date,
         default : Date.now 
-    }
+    },
+    sentFriendRequest : [String],
+    receivedFriendRequest: [String],
+    friends : [String],
+    groupRequest : [String], 
+    groups : [String],
+    isVerified: {
+        type : Boolean,
+        default : false 
+    } 
 });
 
 module.exports = User = mongoose.model('user', UserSchema); 

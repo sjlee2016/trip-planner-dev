@@ -4,8 +4,34 @@ import {setAlert} from '../../actions/alert';
 import {login, loadUser} from '../../actions/auth'; 
 import {connect} from 'react-redux'; 
 import PropTypes from 'prop-types'; 
+import image from '../../img/pexels-photo-346885.jpeg'; 
+import {Card, ListGroup, ListGroupItem,Button} from 'react-bootstrap'; 
+import { MDBContainer, MDBRow, MDBCol, MDBInput, MDBBtn } from 'mdbreact';
 
 const Login = ({setAlert, login, isAuthenticated, loadUser }) => {
+  
+
+const styles = {
+  cover : {
+    alignSelf: 'center',
+    height: 100,
+    width: 100,
+    borderWidth: 1,
+    borderRadius: 10
+  },
+  button: {
+    width: 10
+  },
+  card : {
+    width: '30rem',  
+    justifyContent: 'center',
+    alignItems: 'center', 
+    marginLeft: "auto",
+    marginRight: "auto"
+
+  }
+}; 
+
   const [ formData, setFormData ] = useState({
     email : '',
     password : ''
@@ -27,39 +53,59 @@ const Login = ({setAlert, login, isAuthenticated, loadUser }) => {
       setAlert('Email or password is missing', 'danger'); 
     }else{
       login({email,password}); 
-      loadUser(); 
+      loadUser();
+      return <Redirect to="/"/> 
     }
   }
     return (
-        <Fragment>
-        <section className="container">
-      <h1 className="large text-primary">Sign In</h1>
-      <p className="lead"><i className="fas fa-user"></i> Sign into Your Account</p>
-      <form className="form" onSubmit={ e => onSubmit(e)}>
-        <div className="form-group">
-          <input
-            type="email"
-            placeholder="Email Address"
-            name="email"
-            onChange={e => {onChange(e)}}
-            required
-          />
+      <div styles={{display: 'flex', justifyContent: 'center'}}> 
+      <Card style={styles.card} >
+  <Card.Img variant="top" src={image} style={styles.cover} />
+  <p className="h5 text-center mb-4">Login</p>
+            <div className="grey-text">
+      <MDBInput
+              
+              type="text"
+              icon="envelope"
+              group
+              error="wrong"
+              success="right"
+              label="email"
+              placeholder="Email"
+              name="email"
+              onChange={e => {onChange(e)}}
+              required
+        />
+
+         <MDBInput
+              
+              type="password"
+              icon="lock"
+              group
+              error="wrong"
+              success="right"
+              label="password"
+              placeholder="password"
+              name="password"
+              onChange={e => {onChange(e)}}
+              required
+        />
+    
         </div>
-        <div className="form-group">
-          <input
-            type="password"
-            placeholder="Password"
-            onChange={e => {onChange(e)}}
-            name="password"
-          />
-        </div>
-        <input type="submit" className="btn btn-primary" value="Login"  />
-      </form>
-      <p className="my-1">
-        Don't have an account? <Link to='/register'>Sign Up</Link>
-      </p>
-    </section>
-    </Fragment>
+        
+    
+
+  <br/>
+    <Button type="submit" size="sm" variant="success" styles={styles.button} onClick={e=>onSubmit(e)}> Submit </Button> 
+   
+  <Card.Body>
+    <Card.Text>
+    Already Have an account?
+    </Card.Text>
+    <Card.Link href="/login">Login</Card.Link>
+  </Card.Body>
+</Card>
+</div>
     );
 };
 

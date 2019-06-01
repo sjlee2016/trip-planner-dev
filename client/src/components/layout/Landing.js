@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom';
 import {connect} from 'react-redux'; 
 import PropTypes from 'prop-types';
 const Landing = ({isAuthenticated,state}) => {
-
+  
     if(isAuthenticated) {
       var userName = null;
       if(state.user!=null)
