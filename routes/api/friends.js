@@ -3,12 +3,7 @@ const router = express.Router();
 const User = require('../../models/User'); 
 const auth = require('../../middleware/auth');
 const {check, validationResult} = require('express-validator/check'); 
-
-
-function existsAlready(value, value2) { 
-    return value==value2; 
-} 
-
+    
 // @route   post /api/friends/request
 // @desc    send friend request to a user
 // @access  private
