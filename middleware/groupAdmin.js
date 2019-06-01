@@ -9,7 +9,6 @@ module.exports = function (req, res, next) {
             "_id": req.body.groupId,
             "admin": req.user.id
         }, function (err, count) {
-            console.log("count " + count);
             if (count == 0) {
                 return res.status(404).json({
                     msg: 'Not allowed'

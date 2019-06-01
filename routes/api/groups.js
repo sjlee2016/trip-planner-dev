@@ -205,8 +205,8 @@ router.post('/accept', [auth, isGroupAdmin,
             email: req.body.email
         }).select('-password');
         const group = await Group.findById(req.body.groupId);
-        const groupIndex = group.requests.IndexOf(user.email);
-        const userIndex = user.groupRequests.IndexOf(req.body.groupId);
+        const groupIndex = group.requests.indexOf(user.email);
+        const userIndex = user.groupRequest.indexOf(req.body.groupId); 
         if (groupIndex == -1 || userIndex == -1) {
             return res.status(404).json({
                 msg: 'This request does not exists'
@@ -214,10 +214,11 @@ router.post('/accept', [auth, isGroupAdmin,
         }
 
         group.requests.splice(groupIndex, 1);
-        user.groupRequests.splice(userIndex, 1);
-        group.users.push(user.id);
+        user.groupRequest.splice(userIndex,1);
+        group.user.push(user.id);
         user.groups.push(req.body.groupId);
-
+        group.save();
+        user.save();
         return res.json({
             msg: 'Group join request accepted successfully'
         });
@@ -234,9 +235,9 @@ router.post('/accept', [auth, isGroupAdmin,
 // @route   post /api/groups/admin
 // @desc    cancel a friend request
 // @access  private
-router.post('/cancel', [auth, isGroupAdmin,
+router.post('/cancel', [auth,
     [
-        check('email', 'email is required')
+        check('groupId', 'email is required')
         .not()
         .isEmpty()
     ]
@@ -249,29 +250,84 @@ router.post('/cancel', [auth, isGroupAdmin,
         });
     }
     try {
-        const user = await User.findOne(req.user.id).select('-password');
-        const other = await User.findOne({
-            email: req.body.email
+        const user = await User.findById(req.user.id).select('-password');
+        const group = await Group.findById(req.body.groupId);
+        const groupIndex = group.requests.indexOf(user.email);
+        const userIndex = user.groupRequest.indexOf(req.body.groupId); 
+        if(groupIndex==-1 || userIndex==-1){
+            return res.status(400).json({msg: 'No Group Request found'});
+        }
+
+        group.requests.splice(groupIndex,1); 
+        user.groupRequest.splice(userIndex,1); 
+        group.save();
+        user.save(); 
+        return res.json({msg: 'Group Request Successfully canceled'}); 
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            err: err.message
         });
-        if (user == null || other == null || user.email == req.body.email) {
+    }
+});
+
+
+
+// @route   post /api/groups/request
+// @desc    send group join request to admin
+// @access  private
+router.post('/leave', [auth,
+    [
+        check('groupId', 'group id is required')
+        .not()
+        .isEmpty()
+    ]
+], async (req, res) => {
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({
+            errors: errors.array()
+        });
+    }
+    try {
+        const user = await User.findById(req.user.id).select('-password');
+        if (user == null) {
             return res.status(404).json({
-                err: "Illegal Friend Request"
+                err: "User not authorized"
             });
         }
-        const index = user.sentFriendRequest.indexOf(req.body.email);
-        const index2 = other.receivedFriendRequest.indexOf(user.email);
-        if (index == -1 || index2 == -1) {
+        const group = await Group.findById(req.body.groupId);
+        if (group == null) {
             return res.status(404).json({
-                err: "Friend request does not exist"
+                err: "Group not found"
             });
         }
-        user.sentFriendRequest.splice(index, 1);
-        other.receivedFriendRequest.splice(index2, 1);
-        await user.save();
-        await received.save();
-        return res.json({
-            msg: 'Friend request canceled successfully'
-        });
+        const isUser = group.user.indexOf(user.id); 
+        const adminIndex = group.admin.indexOf(user.id);
+        const userIndex = user.groups.indexOf(req.body.groupId); 
+        if( isUser == -1 || userIndex == -1 ){
+            return res.status(400).json({msg: 'User is not a member of this group'});
+        }
+
+        group.user.splice(isUser,1);
+        group.admin.splice(adminIndex,1);
+        user.groups.splice(userIndex,1); 
+        
+    
+        if(group.admin.length == 0) {
+            if(group.user.length > 1){
+            return res.status(400).json({msg: 'Cannot leave since you are the only admin'});
+            }else{
+                group.remove(); 
+                user.save(); 
+                return res.status(400).json({msg: 'Group deleted'});
+            }
+        }
+        group.save(); 
+        user.save(); 
+        
+        return res.status(400).json({msg: 'Successfully left the group'});
 
     } catch (err) {
         console.log(err);
@@ -280,4 +336,5 @@ router.post('/cancel', [auth, isGroupAdmin,
         });
     }
 });
+
 module.exports = router;
