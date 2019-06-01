@@ -6,6 +6,9 @@ const {check, validationResult} = require('express-validator/check');
 const jwt = require('jsonwebtoken'); 
 const config = require('config');
 const bcrypt = require('bcryptjs'); 
+const crypto = require('crypto'); 
+const nodemailer = require('nodemailer');
+const EmailToken = require('../../models/EmailToken'); 
 // @route   get api /auth
 // @desc    Test route
 // @access  protected 
@@ -57,6 +60,7 @@ router.post('/login', [
                id: user.id
            }
        }
+      
 
        // Json Web Token 
        jwt.sign(
@@ -75,4 +79,5 @@ router.post('/login', [
        res.status(500).send('Server Error');
    }
 }); 
+
 module.exports = router; 
