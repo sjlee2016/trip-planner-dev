@@ -3,7 +3,7 @@ const router = express.Router();
 const auth = require('../../middleware/auth');
 const isGroupAdmin = require("../../middleware/groupAdmin");
 const Group = require('../../models/Group');
-
+const Response = require('../../global/Response');  
 const {
     check,
     validationResult
@@ -30,7 +30,7 @@ router.post('/make', [auth,
     try {
         const user = await User.findById(req.user.id).select('-password');
         if (user == null) {
-            return res.status(404).json({
+            return res.status(ResponseStatus.UNAUTHORIZED).json({
                 err: "User not authorized"
             });
         }
@@ -299,8 +299,8 @@ router.post('/leave', [auth,
         }
         const group = await Group.findById(req.body.groupId);
         if (group == null) {
-            return res.status(404).json({
-                err: "Group not found"
+            return res.status(Response.STATUS.NOT_OK).json({
+               msg : Response.MESSAGE.NOT_OK
             });
         }
         const isUser = group.user.indexOf(user.id); 
