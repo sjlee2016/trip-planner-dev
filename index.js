@@ -29,4 +29,5 @@ app.use('/api/auth', require('./routes/api/auth'));
 app.use('/api/friends', require('./routes/api/friends')); 
 app.use('/api/groups', require('./routes/api/groups')); 
 app.use('/api/verify', require('./routes/api/verify')); 
+app.use('/api/upload', require('./routes/api/upload'));
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`)); 
