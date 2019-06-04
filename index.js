@@ -30,4 +30,13 @@ app.use('/api/friends', require('./routes/api/friends'));
 app.use('/api/groups', require('./routes/api/groups')); 
 app.use('/api/verify', require('./routes/api/verify')); 
 app.use('/api/upload', require('./routes/api/upload'));
+
+app.get('/*', function (req, res) {
+    res.sendfile(__dirname + '/client/build/index.html');
+});
+  
+app.use('/js', express.static(__dirname + '/client/build/static/js'));
+  
+
+
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`)); 
