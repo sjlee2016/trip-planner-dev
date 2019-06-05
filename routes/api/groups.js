@@ -337,4 +337,20 @@ router.post('/leave', [auth,
     }
 });
 
+
+// @route   post /api/groups/remove
+// @desc    remote a member from a group 
+// @access  private
+router.post("/remove", [ auth , isGroupAdmin , [ 
+    check("email", "email is required")
+    .not()
+    .isEmpty(),
+    check("email", "email is not in the right format")
+    .not()
+    .isEmail(), 
+    check("groupId", "group Id is required")
+    .not()
+    .isEmpty() 
+          
+]])
 module.exports = router;
